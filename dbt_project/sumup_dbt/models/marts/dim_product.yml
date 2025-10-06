@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dim_product
+    description: >
+      Dimension table containing product-level master data.
+      Each record represents a unique product identified by a hash-based
+      surrogate key derived from its name, SKU, and category.
+      This model standardizes product information across transactions,
+      enabling category-based and SKU-level reporting.
+    columns:
+      - name: product_id
+        description: >
+          Surrogate key generated using a hash of product_name, product_sku,
+          and category_name. Serves as a unique and stable product identifier.
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: >
+          The full name or label of the product as recorded in transactions.
+        tests:
+          - not_null
+
+      - name: product_sku
+        description: >
+          Stock Keeping Unit (SKU) code uniquely identifying the product variant.
+        tests:
+          - not_null
+
+      - name: product_category
+        description: >
+          High-level classification of the product, such as 'Electronics',
+          'Apparel', 'Home Goods', etc.
+        tests:
+          - not_null

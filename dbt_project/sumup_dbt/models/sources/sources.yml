@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: SUMUP
+    schema: RAW_DATA
+    tables:
+      - name: stores
+      - name: devices
+      - name: transactions

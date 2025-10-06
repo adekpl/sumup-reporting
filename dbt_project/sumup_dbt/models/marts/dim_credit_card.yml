@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: dim_credit_card
+    description: >
+      Dimension table containing unique credit card identifiers derived from
+      the staging transactions data. Each record represents a unique combination
+      of card number and CVV, used to generate a privacy-preserving identifier
+      (`credit_card_id`) for analytical joins with fact tables. Sensitive raw
+      values remain in this table only for controlled use cases; the
+      `credit_card_id` field should be the primary key used in downstream models.
+    columns:
+      - name: credit_card_id
+        description: >
+          Hashed or concatenated identifier of a credit card,
+          created from the combination of card_number and CVV.
+          This serves as the surrogate key for linking transactions.
+        tests:
+          - not_null
+          - unique
+
+      - name: card_number
+        description: >
+          Raw credit card number from the staging layer (sensitive data).
+          Access to this field should be restricted. Consider hashing or masking
+          it in production environments.
+        tests:
+          - not_null
+
+      - name: cvv
+        description: >
+          Card verification value (CVV) associated with the credit card.
+          Used only for generating the credit_card_id, not for reporting.
+        tests:
+          - not_null

@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: dim_devices
+    description: >
+      Dimension table containing metadata about payment devices used by stores.
+      Each record represents a unique physical or virtual device associated with
+      a store. This table is derived from the staging model `stg_devices` and
+      provides device-level attributes used in transaction analysis and performance
+      monitoring across locations.
+    columns:
+      - name: device_id
+        description: "Unique identifier of the device (source: stg_devices.id)."
+        tests:
+          - not_null
+          - unique
+
+      - name: store_id
+        description: "Foreign key linking the device to its store (source: stg_devices.store_id)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stores')
+              field: store_id
+
+      - name: device_type
+        description: >
+          Type or category of the device, e.g., 'POS Terminal', 'Mobile Reader',
+          or 'Online Gateway'. Used to analyze sales by device channel.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['1', '2', '3', '4','5']
+              quote: true
+              severity: warn

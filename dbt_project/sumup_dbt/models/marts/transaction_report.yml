@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: transaction_report
+    description: >
+      Final denormalized reporting model combining transactions with all
+      related dimensions — stores, devices, and products.
+      Each record represents a single transaction event enriched with
+      descriptive metadata for comprehensive analysis and dashboarding.
+      This table serves as the foundation for downstream reporting views.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier of the transaction (from fact_transactions)."
+        tests:
+          - not_null
+          - unique
+
+      - name: device_id
+        description: "Identifier of the device that processed the transaction."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_devices')
+              field: device_id
+
+      - name: product_id
+        description: "Identifier of the purchased product (foreign key to dim_product)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+
+      - name: product_sku
+        description: "Stock Keeping Unit (SKU) of the purchased product."
+        tests:
+          - not_null
+
+      - name: product_name
+        description: "Descriptive name of the purchased product."
+        tests:
+          - not_null
+
+      - name: product_category
+        description: "Product category or segment for grouping and analytics."
+        tests:
+          - not_null
+
+      - name: amount
+        description: "Transaction amount converted to FLOAT for aggregation and analysis."
+        tests:
+          - not_null
+
+      - name: status
+        description: "Transaction status (e.g., SUCCESS, FAILED, PENDING)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['cancelled', 'accepted', 'refused']
+              quote: true
+              severity: warn
+
+      - name: credit_card_id
+        description: >
+          Identifier derived from card_number and CVV, representing the unique
+          payment method used in the transaction. Used for anonymized analysis
+          of spending behavior.
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when the transaction record was created."
+        tests:
+          - not_null
+
+      - name: happened_at
+        description: "Timestamp when the transaction actually occurred."
+        tests:
+          - not_null
+
+      - name: store_id
+        description: "Identifier of the store where the transaction occurred."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stores')
+              field: store_id
+
+      - name: store_name
+        description: "Name of the store or merchant associated with the transaction."
+        tests:
+          - not_null
+
+      - name: city
+        description: "City where the store is located."
+        tests:
+          - not_null
+
+      - name: country
+        description: "Country where the store operates."
+        tests:
+          - not_null
+
+      - name: typology
+        description: "Business typology or category of the store."
+        tests:
+          - not_null
+
+      - name: device_type
+        description: "Type of device used for the transaction (POS, MOBILE, ONLINE)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['1', '2', '3', '4','5']
+              quote: true
+              severity: warn

@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: dim_stores
+    description: >
+      Dimension table containing master data for all stores.
+      Each record represents a unique store with its associated customer,
+      geographic location, creation date, and business typology.
+      This table is derived from the staging model `stg_stores` and
+      is used to join transaction and device facts to store-level attributes.
+    columns:
+      - name: store_id
+        description: "Unique identifier of the store (source: stg_stores.id)."
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Identifier of the customer or merchant associated with the store."
+        tests:
+          - not_null
+
+      - name: store_name
+        description: "Name of the store or business entity."
+        tests:
+          - not_null
+          - unique
+
+      - name: city
+        description: "City in which the store operates."
+        tests:
+          - not_null
+
+      - name: country
+        description: "Country where the store is registered or operates."
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Timestamp when the store record was first created in the system."
+        tests:
+          - not_null
+
+      - name: typology
+        description: >
+          Business category or typology of the store, e.g., 'Retail', 'Restaurant',
+          'Service', or 'E-commerce'. Used for segmentation and reporting.
+        tests:
+          - not_null

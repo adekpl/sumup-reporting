@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: fact_transactions
+    description: >
+      Fact table containing all processed transactions from the staging layer.
+      Each row represents a single transaction event enriched with credit card
+      identifier and device references. This model is materialized as a table
+      in Snowflake and serves as the core fact table for reporting and analysis.
+    columns:
+      - name: transaction_id
+        description: "Unique identifier of the transaction (source: stg_transactions.id)."
+        tests:
+          - not_null
+          - unique
+
+      - name: device_id
+        description: "Identifier of the device on which the transaction occurred."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_devices')
+              field: device_id
+
+      - name: product_id
+        description: "Product Identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+
+      - name: amount
+        description: "Transaction amount in the local currency."
+        tests:
+          - not_null
+
+      - name: status
+        description: "Status of the transaction, e.g., SUCCESS, FAILED, PENDING."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['cancelled', 'accepted', 'refused']
+
+      - name: credit_card_id
+        description: >
+          Hashed credit card identifier created from card number and CVV.
+          Used for privacy-preserving linkage of payments across devices.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('dim_credit_card')
+              field: credit_card_id
+
+
+      - name: created_at
+        description: "Timestamp when the transaction record was created in the system."
+        tests:
+          - not_null
+
+      - name: happened_at
+        description: "Timestamp when the actual transaction took place."
+        tests:
+          - not_null
+
+      - name: store_id
+        description: "Unique identifier of the device (source: stg_devices.id)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stores')
+              field: store_id
