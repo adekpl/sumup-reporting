@@ -65,12 +65,12 @@ sumup_dbt:
     dev:
       account: riplfll-ej83096
       database: reporting
-      password: Sumup123sumup123!
+      password: <replace_your_data>
       role: accountadmin
       schema: analytics
       threads: 2
       type: snowflake
-      user: sumup
+      user: <replace_your_data>
       warehouse: compute_wh
   target: dev
 
