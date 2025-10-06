@@ -11,7 +11,7 @@ SELECT
     ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (PARTITION BY DATE_TRUNC('month', happened_at::date)), 2)
         AS percentage_of_transactions
 FROM base
-WHERE status = 'SUCCESS'
+WHERE status = 'accepted'
 GROUP BY
     DATE_TRUNC('month', happened_at::date),
     device_type

@@ -11,7 +11,7 @@ SELECT
     ROUND(AVG(amount), 2) AS avg_transaction_amount,
     COUNT(*) AS total_transactions
 FROM base
-WHERE status = 'SUCCESS'
+WHERE status = 'accepted'
 GROUP BY
     DATE_TRUNC('month', happened_at::date),
     country,
