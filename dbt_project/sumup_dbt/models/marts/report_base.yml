@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: report_base
+    description: >
+      A unified, denormalized reporting layer that combines transactions, stores,
+      devices, and product information into a single table.  
+      Serves as the base model for all reporting and analytical views in the project.
+
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction from fact_transactions."
+        tests:
+          - not_null
+          - unique
+
+      - name: device_id
+        description: "Identifier of the device used for the transaction."
+        tests:
+          - relationships:
+              to: ref('dim_devices')
+              field: device_id
+
+      - name: product_id
+        description: "Identifier of the product sold during the transaction."
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+
+      - name: product_sku
+        description: "Stock Keeping Unit (SKU) of the product."
+
+      - name: product_name
+        description: "Descriptive product name."
+
+      - name: product_category
+        description: "Category or classification of the product."
+
+      - name: amount
+        description: "Transaction amount in local currency."
+        tests:
+          - not_null
+
+      - name: status
+        description: "Transaction status (e.g., SUCCESS, FAILED, PENDING)."
+        tests:
+          - not_null
+
+      - name: credit_card_id
+        description: >
+          Hashed identifier representing the customer's credit card 
+          (concatenation of card_number and cvv, used for pseudonymization)."
+
+      - name: created_at
+        description: "Timestamp when the transaction record was created in the system."
+
+      - name: happened_at
+        description: "Timestamp when the transaction actually occurred."
+        tests:
+          - not_null
+
+      - name: store_id
+        description: "Identifier of the store where the transaction took place."
+        tests:
+          - relationships:
+              to: ref('dim_stores')
+              field: store_id
+
+      - name: store_name
+        description: "Store name from dim_stores."
+
+      - name: city
+        description: "City where the store operates."
+
+      - name: country
+        description: "Country in which the store operates."
+
+      - name: typology
+        description: "Store typology (e.g., Retail, Restaurant, Service)."
+
+      - name: device_type
+        description: "Type of the device used for processing the transaction (e.g., POS, Mobile Reader)."

@@ -1,18 +1,22 @@
 version: 2
 
 models:
-  - name: report_store_first5_time
+  - name: report_avg_amount_by_typology
     description: >
-      Measures the average time difference (in minutes) for each store to complete
-      its first five transactions. Provides insight into store activation and ramp-up speed.
+      Average transaction amount per store typology and country, grouped monthly.
+      Helps analyze performance across retail types and geographic regions.
     columns:
-      - name: store_id
-        description: "Unique identifier of the store."
+      - name: month_date
+        description: "Month representing the aggregation period."
         tests:
           - not_null
-      - name: store_name
-        description: "Store name from dim_stores."
-      - name: minutes_between_first_and_fifth
-        description: "Time difference (in minutes) between the first and fifth transactions."
+      - name: country
+        description: "Country of the transaction."
         tests:
           - not_null
+      - name: typology
+        description: "Store typology (e.g., Retail, Restaurant, etc.)."
+      - name: avg_transaction_amount
+        description: "Average transaction amount for the given typology and country."
+      - name: total_transactions
+        description: "Total number of transactions in that month for the group."
