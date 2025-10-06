@@ -6,22 +6,24 @@ This repository contains the complete **ETL and analytics pipeline** for loading
 
 ## 📁 Repository Structure
 
-.
-├── load_data/ # Scripts to load Excel files into Snowflake
-│ ├── upload_excels.py
-│ └── ...
-├── sumup_dbt/ # dbt project
-│ ├── dbt_project.yml
-│ ├── models/
-│ │ ├── staging/
-│ │ ├── marts/
-│ │ │ ├── dimensions/
-│ │ │ ├── facts/
-│ │ │ └── reports/
-│ └── ...
-├── logs/ # Logs or ETL outputs
-├── .env # Environment variables (not committed)
-└── README.md
+sumup-reporting/
+├── load_data/                  # Python scripts to load Excel files into Snowflake
+│   ├── upload_excels.py
+│   └── ...
+│
+├── sumup_dbt/                  # dbt project folder
+│   ├── dbt_project.yml
+│   ├── models/
+│   │   ├── staging/            # staging models (raw → cleaned)
+│   │   ├── marts/
+│   │   │   ├── dimensions/     # dimension tables (dim_stores, dim_devices, etc.)
+│   │   │   ├── facts/          # fact tables (fact_transactions)
+│   │   │   └── reports/        # reporting models (reporting_base, sales_summary)
+│   └── ...
+│
+├── logs/                       # optional logs or ETL run outputs
+├── .env                        # environment variables (excluded from Git)
+└── README.md                   # project documentation
 
 
 ### 📦 Components
@@ -195,58 +197,4 @@ Add snapshot models for historical tracking
 
 Add data freshness tests and daily scheduling
 
-## 🧩 Data Lineage Diagram
-
-```mermaid
-graph TD
-    %% Raw data
-    subgraph Raw Data [Excel Source Files]
-        A1[transactions.xlsx]
-        A2[stores.xlsx]
-        A3[devices.xlsx]
-        A4[products.xlsx]
-    end
-
-    %% Staging
-    subgraph Staging
-        B1[stg_transactions]
-        B2[stg_stores]
-        B3[stg_devices]
-        B4[stg_products]
-    end
-
-    %% Dimensions and Facts
-    subgraph Data Marts
-        C1[dim_stores]
-        C2[dim_devices]
-        C3[dim_products]
-        C4[dim_credit_cards]
-        C5[fact_transactions]
-    end
-
-    %% Reports
-    subgraph Reporting
-        D1[reporting_base]
-        D2[report_sales_summary]
-    end
-
-    %% Flows
-    A1 --> B1
-    A2 --> B2
-    A3 --> B3
-    A4 --> B4
-
-    B1 --> C4
-    B1 --> C5
-    B2 --> C1
-    B3 --> C2
-    B4 --> C3
-
-    C1 --> C5
-    C2 --> C5
-    C3 --> C5
-    C4 --> C5
-
-    C5 --> D1
-    D1 --> D2
 
