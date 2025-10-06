@@ -4,33 +4,13 @@ This repository contains the complete **ETL and analytics pipeline** for loading
 
 ---
 
-## 📁 Repository Structure
-
-sumup-reporting/
-├── load_data/                  # Python scripts to load Excel files into Snowflake
-│   ├── upload_excels.py
-│   └── ...
-│
-├── sumup_dbt/                  # dbt project folder
-│   ├── dbt_project.yml
-│   ├── models/
-│   │   ├── staging/            # staging models (raw → cleaned)
-│   │   ├── marts/
-│   │   │   ├── dimensions/     # dimension tables (dim_stores, dim_devices, etc.)
-│   │   │   ├── facts/          # fact tables (fact_transactions)
-│   │   │   └── reports/        # reporting models (reporting_base, sales_summary)
-│   └── ...
-│
-├── logs/                       # optional logs or ETL run outputs
-├── .env                        # environment variables (excluded from Git)
-└── README.md                   # project documentation
 
 
 ### 📦 Components
 
 - **`load_data/`** — Python scripts to ingest `.xlsx` files into **RAW_DATA** schema in Snowflake  
 - **`sumup_dbt/`** — dbt project containing staging, dimension, fact, and reporting models  
-- **`.env`** — local environment variables (Snowflake credentials)  
+- **`load_data/.env`** — local environment variables (Snowflake credentials)  
 - **`logs/`** — optional logs directory for ETL job outputs  
 
 ---
@@ -44,8 +24,10 @@ Make sure you have installed:
 - Python **3.8+**
 - [`dbt-snowflake`](https://docs.getdbt.com/docs/core/connect-data-platform/snowflake)
 - `pandas`
-- `snowflake-connector-python`
-- `python-dotenv`
+- `os'
+- `load_dotenv`
+- 'openpyxl'
+- 'snowflake.connector'
 - Access to a **Snowflake account** with write permissions
 
 ---
@@ -58,7 +40,7 @@ git clone https://github.com/adekpl/sumup-reporting.git
 cd sumup-reporting
 
 # 2. Install Python dependencies
-pip install pandas snowflake-connector-python python-dotenv
+pip install pandas os load_dotenv openpyxl snowflake.connector
 
 # 3. Install dbt for Snowflake
 pip install dbt-snowflake
@@ -67,29 +49,31 @@ pip install dbt-snowflake
 🔑 Configuration
 1️⃣ Environment Variables
 
-Create a .env file in the project root:
+Create a /load_data/.env file in the project root:
 
-SNOWFLAKE_USER=your_username
+SNOWFLAKE_USER=your_username 
 SNOWFLAKE_PASSWORD=your_password
+
+For concept phase is already created
 
 2️⃣ dbt Profile
 
 In your ~/.dbt/profiles.yml, configure the Snowflake connection:
 
 sumup_dbt:
-  target: dev
   outputs:
     dev:
-      type: snowflake
       account: riplfll-ej83096
-      user: "{{ env_var('SNOWFLAKE_USER') }}"
-      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
-      role: ACCOUNTADMIN
-      warehouse: COMPUTE_WH
-      database: SUMUP
-      schema: RAW_DATA
-      threads: 4
-      client_session_keep_alive: False
+      database: reporting
+      password: Sumup123sumup123!
+      role: accountadmin
+      schema: analytics
+      threads: 2
+      type: snowflake
+      user: sumup
+      warehouse: compute_wh
+  target: dev
+
 
 🚀 Usage
 1️⃣ Load Excel Files into Snowflake

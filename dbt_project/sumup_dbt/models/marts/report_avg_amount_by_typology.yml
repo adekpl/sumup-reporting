@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: report_store_first5_time
+    description: >
+      Measures the average time difference (in minutes) for each store to complete
+      its first five transactions. Provides insight into store activation and ramp-up speed.
+    columns:
+      - name: store_id
+        description: "Unique identifier of the store."
+        tests:
+          - not_null
+      - name: store_name
+        description: "Store name from dim_stores."
+      - name: minutes_between_first_and_fifth
+        description: "Time difference (in minutes) between the first and fifth transactions."
+        tests:
+          - not_null

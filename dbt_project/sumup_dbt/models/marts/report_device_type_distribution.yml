@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: report_device_type_distribution
+    description: >
+      Monthly distribution of transactions by device type. Displays both total
+      counts and percentage share of transactions per device.
+    columns:
+      - name: month_date
+        description: "Month of aggregation (truncated to first day of the month)."
+        tests:
+          - not_null
+      - name: device_type
+        description: "Type of device used in the transaction (e.g., POS, Mobile Reader)."
+        tests:
+          - not_null
+      - name: total_transactions
+        description: "Total number of transactions performed on this device type that month."
+      - name: percentage_of_transactions
+        description: "Share of all transactions (%) for that device type within the month."

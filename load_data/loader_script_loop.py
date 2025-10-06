@@ -8,8 +8,8 @@ load_dotenv()
 
 # --- Snowflake connection setup ---
 conn = snowflake.connector.connect(
-    user="sumup",        # from .env
-    password="Sumup123sumup123!",# from .env
+    user=os.getenv("SNOWFLAKE_USER"), # "sumup",        # from .env
+    password=os.getenv("SNOWFLAKE_PASSWORD"), #"Sumup123sumup123!",# from .env
     account="riplfll-ej83096",               # your account (no need for .snowflakecomputing.com)
     warehouse="COMPUTE_WH",
     database="SUMUP",

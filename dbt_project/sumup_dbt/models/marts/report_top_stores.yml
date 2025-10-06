@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: report_top_stores
+    description: >
+      Monthly report showing the top 10 stores by total transacted amount.
+      Aggregated from the reporting_base table and grouped by store and month.
+    columns:
+      - name: month_date
+        description: "First day of the month representing the aggregation period."
+      - name: store_id
+        description: "Unique identifier of the store."
+        tests:
+          - not_null
+      - name: store_name
+        description: "Store name as defined in dim_stores."
+      - name: city
+        description: "City where the store operates."
+      - name: country
+        description: "Country of the store location."
+      - name: total_transacted_amount
+        description: "Total transaction amount (SUM of transaction values)."
+      - name: rank_store
+        description: "Ranking of store by total amount per month (1 = highest)."

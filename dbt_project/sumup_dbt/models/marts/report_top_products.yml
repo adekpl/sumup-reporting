@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: report_top_products
+    description: >
+      Monthly report showing the top 10 products sold, ranked by total sales amount.
+      Useful for product performance and category trend analysis.
+    columns:
+      - name: month_date
+        description: "Month of transaction aggregation."
+      - name: product_id
+        description: "Unique product identifier."
+        tests:
+          - not_null
+      - name: product_name
+        description: "Product name from dim_product."
+      - name: product_category
+        description: "Product category name."
+      - name: total_sales
+        description: "Total sales amount for the product within the month."
+      - name: total_transactions
+        description: "Number of transactions for the product in that month."
+      - name: rank_product
+        description: "Rank of the product by total monthly sales (1 = best selling)."
