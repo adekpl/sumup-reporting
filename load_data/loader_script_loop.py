@@ -43,7 +43,7 @@ for file in excel_files:
     table_name = os.path.splitext(file)[0].upper()  # e.g. "stores.xlsx" -> "STORES"
 
     # Create table dynamically (VARCHAR columns)
-    drop_table_sql = f'DROP TABLE IF EXISTS TABLE {table_name}'
+    drop_table_sql = f'DROP TABLE IF EXISTS {table_name}'
     columns = ", ".join([f'"{col}" VARCHAR' for col in df.columns])
     create_sql = f'CREATE OR REPLACE TABLE {table_name} ({columns})'
     cs.execute(create_sql)
